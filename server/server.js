@@ -36,14 +36,11 @@ app.use(express.json());
 app.use(express.static('static'));
 
 // Routes
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'index.html'));
-});
+app.use('/', require('./routes/root'));
+app.use('/subdir', require('./routes/subdir'));
+app.use('/employees', require('./routes/api/employees'));
 
-app.get('/new', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'new.html'));
-});
-
+// 404
 app.use((req, res) => {
     res.status(404);
     if (req.accepts('html')) {
