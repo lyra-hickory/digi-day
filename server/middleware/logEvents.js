@@ -11,7 +11,7 @@ const logEvents = async(msg, logName) => {
     const dateTime = `${format(new Date(), 'yyyyMMdd\tHH:mm:ss')}`
     const logItem = `${dateTime}\t${uuid()}\t${msg}\n`
 
-    const logPath = path.join(__dirname, 'logs');
+    const logPath = path.join(__dirname, '..', 'logs');
 
     try {
         if(!fs.existsSync(logPath)) {
@@ -23,4 +23,10 @@ const logEvents = async(msg, logName) => {
     }
 }
 
-module.exports = logEvents;
+const logger = (req, res, next) => {
+    logEvents(`${req.method}\t${req.headers.origin}\t${req.url}`, 'reqLog.txt');
+    console.log(`${req.method}\t${req.path}`);
+    next();
+};
+
+module.exports = {logger, logEvents};
