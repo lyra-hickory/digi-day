@@ -36,7 +36,7 @@ app.use(express.json());
 app.use(express.static('static'));
 
 // Routes
-app.get('/index', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
@@ -44,10 +44,11 @@ app.get('/new', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'new.html'));
 });
 
-app.all('/', (req, res) => {
+app.use((req, res) => {
     res.status(404);
     if (req.accepts('html')) {
         res.sendFile(path.join(__dirname, 'views', '404.html'));
+        return;
     }
     if (req.accepts('json')) {
         res.json({error: '404 Not Found'});
