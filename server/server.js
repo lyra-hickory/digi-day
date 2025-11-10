@@ -13,17 +13,7 @@ const PORT = process.env.PORT || 3500;
 app.use(logger);
 
 // Cross Origin Resource Sharing
-const corsWhitelist = ['http://localhost:3500','https://www.google.com'];
-const corsOptions = {
-    origin: (origin, callback) => {
-      if(corsWhitelist.indexOf(origin) !== -1 || !origin) {
-          callback(null, true);
-      } else {
-          callback(new Error('Not allowed by CORS'));
-      }
-    },
-    optionsSuccessStatus: 200,
-};
+const corsOptions = require('./config/corsOptions')
 app.use(cors(corsOptions));
 
 // handles form data
@@ -37,8 +27,6 @@ app.use(express.static('static'));
 
 // Routes
 app.use('/', require('./routes/root'));
-app.use('/subdir', require('./routes/subdir'));
-app.use('/employees', require('./routes/api/employees'));
 
 // 404
 app.use((req, res) => {
@@ -57,6 +45,5 @@ app.use((req, res) => {
 
 // Error handling
 app.use(errorHandler);
-
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
